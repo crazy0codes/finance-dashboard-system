@@ -3,7 +3,7 @@ import {
     getAllRecords,
     updateRecord,
     deleteRecord
-} from "../services/recordService"
+} from "../services/recordService.js"
 
 
 export async function createRecordController(req, res) {

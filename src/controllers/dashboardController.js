@@ -3,7 +3,7 @@ import {
   getCategoryTotals,
   getRecentActivity,
   getMonthlyTrends
-} from "../services/dashboardService";
+} from "../services/dashboardService.js";
 
 export async function getSummaryController(req, res) {
   try {

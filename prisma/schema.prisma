@@ -8,7 +8,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 model User {
@@ -28,7 +29,7 @@ model Record {
   category  Category
   date      DateTime   @db.Timestamptz
   notes     String?
-  createdBy User       @relation(fields: [userId], references: [id])
+  createdBy User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   createdAt DateTime   @default(now()) @db.Timestamptz
   updatedAt DateTime   @updatedAt @db.Timestamptz

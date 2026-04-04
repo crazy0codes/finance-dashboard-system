@@ -3,7 +3,7 @@ import {
     deleteUser,
     getAllUsers,
     updateUserStatus
-} from "../services/userService"
+} from "../services/userService.js"
 
 export async function getAllUserController(req, res) {
     try {
@@ -22,6 +22,9 @@ export async function getAllUserController(req, res) {
 export async function updateUserRoleController(req, res) {
     try {
         const id = parseInt(req.params.id);
+        if (isNaN(id)) {
+            return res.status(400).json({ error: "Invalid user id" });
+        }
         const { role } = req.body;
         const updatedRole = await updateUserRole(id, role);
         return res.status(200).json({ ...updatedRole })
@@ -36,6 +39,9 @@ export async function updateUserRoleController(req, res) {
 export async function updateUserStatusController(req, res) {
     try {
         const id = parseInt(req.params.id);
+        if (isNaN(id)) {
+            return res.status(400).json({ error: "Invalid user id" });
+        }
         const { status } = req.body;
         const updatedStatus = await updateUserStatus(id, status);
         res.status(200).json({
@@ -52,6 +58,9 @@ export async function updateUserStatusController(req, res) {
 export async function deleteUserController(req, res) {
     try {
         const id = parseInt(req.params.id);
+        if (isNaN(id)) {
+            return res.status(400).json({ error: "Invalid user id" });
+        }
         const user = await deleteUser(id);
         return res.status(200).json({
             user
