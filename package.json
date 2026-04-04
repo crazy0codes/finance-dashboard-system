@@ -1,0 +1,24 @@
+{
+  "name": "finance-dashboard-system",
+  "version": "1.0.0",
+  "description": "finance dashboard system where different users interact with financial records based on their role.The system support the storage and management of financial entries, user roles, permissions, and summary level analytics.",
+  "license": "ISC",
+  "author": "Madhan",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm run test",
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.6.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "prisma": "^7.6.0"
+  }
+}
