@@ -14,8 +14,11 @@ app.use("/api/records", recordRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
 app.use((err, req, res, next) => {
+  if (err.isOperational) {
+    return res.status(err.status).json({ error: err.message });
+  }
   console.error(err);
-  res.status(err.status || 500).json({ error: err.message || "Internal server error" });
+  return res.status(500).json({ error: "Internal Server Error" });
 });
 
 export default app;
