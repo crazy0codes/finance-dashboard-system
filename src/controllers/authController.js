@@ -18,8 +18,8 @@ export async function registerController(req, res) {
 export async function loginController(req, res) {
     try {
         const { email, password } = req.body;
-        const user = await login(email, password);
-        return res.status(200).json({ user });
+        const token = await login(email, password);
+        return res.status(200).json({ token });
     } catch (error) {
         if (error.isOperational) {
             return res.status(error.status).json({ error: error.message });
