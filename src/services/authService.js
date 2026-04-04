@@ -1,10 +1,11 @@
 import prisma from "../config/db";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { AppError } from "../utils/appError";
 
 export async function register(email, password, role) {
     if (!email || !password) {
-        throw new Error("Email and password are required")
+        throw new AppError("Email and password are required", 400)
     }
 
     try {
@@ -14,7 +15,7 @@ export async function register(email, password, role) {
             }
         });
 
-        if (isUser) throw new Error("Email already exists");
+        if (isUser) throw new AppError("Email already exists", 409);
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await prisma.user.create({
@@ -28,20 +29,15 @@ export async function register(email, password, role) {
         return userWithoutPassword;
 
     } catch (error) {
-        if (error.message === "Email already exists" ||
-            error.message === "Email and password are required") {
-            throw error;
-        }
-
-
+        if(error.isOperational) throw error;
         console.error(error);
-        throw new Error("Internal Server Error");
+        throw new AppError("Internal Server Error", 500);
     }
 }
 
 export async function login(email, password) {
     if (!email || !password) {
-        throw new Error("Invalid Credentials");
+        throw new AppError("Invalid Credentials", 401);
     }
 
     try {
@@ -51,12 +47,12 @@ export async function login(email, password) {
             }
         })
         if (!user) {
-            throw new Error("No user found");
+            throw new AppError("No user found", 404);
         }
 
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) {
-            throw new Error("Invalid Credentails")
+            throw new AppError("Invalid Credentails", 401)
         }
 
         const token = jwt.sign(
@@ -68,11 +64,8 @@ export async function login(email, password) {
         return token;
 
     } catch (error) {
-        if (error.message === "Invalid Credentials" || error.message === "No user found") {
-            throw error;
-        }
-
+        if(error.isOperational) throw error;
         console.error(error);
-        throw new Error("Internal Server Error");
+        throw new AppError("Internal Server Error", 500);
     }
 }

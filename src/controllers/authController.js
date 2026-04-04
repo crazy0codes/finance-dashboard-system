@@ -8,12 +8,10 @@ export async function registerController(req, res) {
         const user = await register(email, password, role);
         return res.status(201).json({ user });
     } catch (error) {
-        const statusMap = {
-            "Email already exists": 409,
-            "Email and password are required": 400,
-        };
-        const status = statusMap[error.message] || 500;
-        return res.status(status).json({ error: error.message });
+        if (error.isOperational) {
+            return res.status(error.status).json({ error: error.message });
+        }
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
@@ -23,11 +21,9 @@ export async function loginController(req, res) {
         const user = await login(email, password);
         return res.status(200).json({ user });
     } catch (error) {
-        const statusMap = {
-            "No user found": 401,
-            "Invalid Credentials": 401,
-        };
-        const status = statusMap[error.message] || 500;
-        return res.status(status).json({ error: error.message });
+        if (error.isOperational) {
+            return res.status(error.status).json({ error: error.message });
+        }
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }

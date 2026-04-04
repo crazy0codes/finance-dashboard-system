@@ -1,4 +1,5 @@
 import prisma from "../config/db"
+import { AppError } from "../utils/AppError";
 
 export async function getAllUsers() {
     try {
@@ -7,7 +8,7 @@ export async function getAllUsers() {
 
     } catch (error) {
         console.error(error);
-        throw new Error("Internal Server Error");
+        throw new AppError("Internal Server Error", 500);
     }
 }
 
@@ -15,7 +16,7 @@ export async function updateUserRole(id, role) {
 
     try {
         const existing = await prisma.user.findUnique({ where: { id } });
-        if (!existing) throw new Error("User not found");
+        if (!existing) throw new AppError("User not found", 404);
         const user = await prisma.user.update({
             where: {
                 id
@@ -29,16 +30,16 @@ export async function updateUserRole(id, role) {
         return updatedUserRole;
 
     } catch (error) {
-        if (error.message === "User not found") throw error;
+        if(error.isOperational) throw error;
         console.error(error);
-        throw new Error("Internal Server Error");
+        throw new AppError("Internal Server Error", 500);
     }
 }
 
 export async function updateUserStatus(id, status) {
     try {
         const existing = await prisma.user.findUnique({ where: { id } });
-        if (!existing) throw new Error("User not found");
+        if (!existing) throw new AppError("User not found", 404);
         const user = await prisma.user.update({
             where: {
                 id
@@ -52,9 +53,9 @@ export async function updateUserStatus(id, status) {
         return updatedUserStatus;
 
     } catch (error) {
-        if (error.message === "User not found") throw error;
+        if (error.isOperational) throw error;
         console.error(error);
-        throw new Error("Internal Server Error");
+        throw new AppError("Internal Server Error", 500);
     }
 }
 
@@ -72,6 +73,6 @@ export async function deleteUser(id) {
 
     } catch (error) {
         console.error(error);
-        throw new Error("Internal Server Error");
+        throw new AppError("Internal Server Error", 500);
     }
 }
