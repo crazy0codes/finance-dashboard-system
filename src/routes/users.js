@@ -5,9 +5,9 @@ import {
     getAllUserController,
     updateUserRoleController,
     updateUserStatusController
-} from "../controllers/userController"
-import { allow } from "../middlewares/rbac"
-import { auth } from "../middlewares/auth"
+} from "../controllers/userController.js"
+import { allow } from "../middlewares/rbac.js"
+import { auth } from "../middlewares/auth.js"
 
 
 const router = Router();

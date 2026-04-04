@@ -1,5 +1,5 @@
 
-import { register, login } from "../services/authService"
+import { register, login } from "../services/authService.js"
 
 
 export async function registerController(req, res) {

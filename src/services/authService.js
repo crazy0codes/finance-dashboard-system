@@ -1,7 +1,7 @@
-import prisma from "../config/db";
+import prisma from "../config/db.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { AppError } from "../utils/appError";
+import { AppError } from "../utils/appError.js";
 
 export async function register(email, password, role) {
     if (!email || !password) {

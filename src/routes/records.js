@@ -4,10 +4,10 @@ import {
     createRecordController,
     getAllRecordsController,
     updateRecordController
-} from "../controllers/recordController"
+} from "../controllers/recordController.js"
 
-import { auth } from "../middlewares/auth"
-import { allow } from "../middlewares/rbac"
+import { auth } from "../middlewares/auth.js"
+import { allow } from "../middlewares/rbac.js"
 
 const router = Router();
 
