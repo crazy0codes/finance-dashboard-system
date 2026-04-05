@@ -5,14 +5,20 @@ import {
   getRecentActivityController,
   getMonthlyTrendsController
 } from "../controllers/dashboardController.js";
+import {
+  validateGetCategoryTotals,
+  validateGetMonthlyTrends,
+  validateGetRecentActivity,
+  validateGetSummary
+} from "../validations/dashboardValidation.js"
 import { auth } from "../middlewares/auth.js";
 import { allow } from "../middlewares/rbac.js";
 
 const router = Router();
 
-router.get("/summary", auth, allow("ANALYST", "ADMIN"), getSummaryController);
-router.get("/categories", auth, allow("ANALYST", "ADMIN"), getCategoryTotalsController);
-router.get("/recent", auth, allow("ANALYST", "ADMIN"), getRecentActivityController);
-router.get("/trends", auth, allow("ANALYST", "ADMIN"), getMonthlyTrendsController);
+router.get("/summary", auth, allow("ANALYST", "ADMIN"), validateGetSummary, getSummaryController);
+router.get("/categories", auth, allow("ANALYST", "ADMIN"), validateGetCategoryTotals, getCategoryTotalsController);
+router.get("/recent", auth, allow("ANALYST", "ADMIN"), validateGetRecentActivity, getRecentActivityController);
+router.get("/trends", auth, allow("ANALYST", "ADMIN"), validateGetMonthlyTrends, getMonthlyTrendsController);
 
 export default router;

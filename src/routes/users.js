@@ -9,7 +9,6 @@ import {
 import { allow } from "../middlewares/rbac.js"
 import { auth } from "../middlewares/auth.js"
 
-
 const router = Router();
 
 router.get("/", auth, allow("ADMIN"), getAllUserController)
