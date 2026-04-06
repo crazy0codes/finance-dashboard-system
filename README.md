@@ -52,7 +52,6 @@ Records are soft deleted by setting a `deletedAt` timestamp instead of removing 
 
 **What I'd improve with more time**
 - Add pagination to record listing
-- Add rate limiting to auth endpoints  
 - Add refresh token support
 - Write unit tests for the service layer
 - Restrict system to single super-admin with ability to promote others
