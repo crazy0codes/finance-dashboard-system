@@ -32,22 +32,22 @@ The system implements Role-Based Access Control (RBAC) with the following roles:
 
 ## Design Decisions & Assumptions
 
-**Architecture**
+- **Architecture**
 This project follows MVC architecture — routes handle incoming requests, controllers manage request/response, and services contain all business logic. This separation makes the code easier to maintain and reason about.
 
-**Error Handling**
+- **Error Handling**
 Instead of throwing plain `new Error()` everywhere and writing repetitive status code checks in every controller, I created a custom `AppError` class that carries both a message and a status code. Controllers just check `error.isOperational` to decide whether to show the error to the client or hide it behind a generic 500. This keeps sensitive internal errors away from the client while still returning meaningful messages for expected errors like "User not found" or "Email already exists".
 
-**Validation**
+- **Validation**
 I wrote simple custom validation middleware instead of using libraries like Zod or Joi. It checks field presence, types, and enum values manually. It's more verbose but easier to understand and doesn't add unnecessary dependencies for a project of this size.
 
-**Multiple Admins**
+- **Multiple Admins**
 The system allows multiple admins by design. There's no real-world rule that limits a company to one admin. An existing admin can register or promote other users to ADMIN role. If needed, this can easily be restricted to a single admin by adding a check in the register service.
 
-**Enums over Tables**
+- **Enums over Tables**
 Instead of creating separate tables for categories, roles, statuses and record types, I used PostgreSQL enums via Prisma. The values are fixed and well-defined, so a separate table would add unnecessary complexity without any benefit.
 
-**Soft Delete**
+- **Soft Delete**
 Records are soft deleted by setting a `deletedAt` timestamp instead of removing the row. This preserves financial history which is important in any finance system. Users are hard deleted — when a user is deleted, their records cascade delete automatically.
 
 **What I'd improve with more time**
@@ -60,6 +60,8 @@ Records are soft deleted by setting a `deletedAt` timestamp instead of removing 
 ---
 
 ## Database Schema
+
+![Finance Dashboard](docs/finance.svg)
 
 ### Models
 
