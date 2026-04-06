@@ -3,15 +3,26 @@ import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import recordRoutes from "./routes/records.js";
 import dashboardRoutes from "./routes/dashboard.js";
+import rateLimit from "express-rate-limit";
+import cors from "cors";
 
 const app = express();
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100,
+  message: { error: "Too many requests, please try again later" }
+});
 
 app.use(express.json());
-
+app.use(limiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/records", recordRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use(cors());
+
+
+
 
 app.use((err, req, res, next) => {
   if (err.isOperational) {
